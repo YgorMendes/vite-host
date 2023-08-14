@@ -14,8 +14,8 @@ export default defineConfig({
       name: "host",
       filename: "remoteEntry.js",
       remotes: {
-        product_a: "http://localhost:3001/assets/remoteEntry.js",
-        host: "http://localhost:3000/assets/remoteEntry.js",
+        product_a: "https://vite-remote.vercel.app/assets/remoteEntry.js",
+        host: "https://vite-host.vercel.app/assets/remoteEntry.js",
       },
       exposes: {
         "./AuthContext": "./src/contexts/AuthContext.tsx",

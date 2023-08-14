@@ -5,7 +5,7 @@ const HomeView = () => {
   const { isAuthenticated } = useUser();
 
   useState(() => {
-    console.log(isAuthenticated());
+    console.log("isAuthenticated:", isAuthenticated());
   }, []);
 
   return (
