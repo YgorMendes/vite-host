@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "host/UserAuth";
+import { useKeycloak } from "@react-keycloak/web";
 
 const HomeView = () => {
   const { isAuthenticated } = useUser();
+  const { keycloak } = useKeycloak();
+
+  useEffect(() => {
+    const isLoggedIn = keycloak.authenticated;
+    console.log({ keycloak });
+    console.log({ isLoggedIn });
+  }, []);
 
   useState(() => {
     console.log("isAuthenticated:", isAuthenticated());

@@ -7,16 +7,21 @@ import AuthContextProvider from "host/AuthContextProvider";
 import { UserProvider } from "host/UserAuth";
 import Layout from "./components/Layout";
 
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import keycloak from "./contexts/KeycloackProvider.js";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <AuthContextProvider>
-          <Layout>
-            <App />
-          </Layout>
-        </AuthContextProvider>
-      </UserProvider>
-    </BrowserRouter>
+    <ReactKeycloakProvider authClient={keycloak}>
+      <BrowserRouter>
+        <UserProvider>
+          <AuthContextProvider>
+            <Layout>
+              <App />
+            </Layout>
+          </AuthContextProvider>
+        </UserProvider>
+      </BrowserRouter>
+    </ReactKeycloakProvider>
   </React.StrictMode>
 );
