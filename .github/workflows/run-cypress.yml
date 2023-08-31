@@ -8,8 +8,9 @@ jobs:
   trigger-cypress-tests:
     runs-on: ubuntu-22.04
     steps:
-     - name: Delay for 4 minutes
+      - name: Delay for 4 minutes
         run: sleep 240s
+        
       - name: Trigger Cypress Pipeline
         uses: actions/github-script@v5
         with:
