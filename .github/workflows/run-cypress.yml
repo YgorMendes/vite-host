@@ -4,31 +4,34 @@ on:
   push:
     branches:
       - master
+
 jobs:
   trigger-cypress-tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Delay for 4 minutes
-        run: sleep 60s
+      - name: Delay for 1 minute
+        run: sleep 60s  # 60 segundos = 1 minuto
 
       - name: Trigger Cypress Pipeline
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            npm install -g @actions/github-script
-            npx github-script <<SCRIPT
-            const { octokit } = require("@octokit/rest");
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install -g @actions/github-script
+          npx github-script <<SCRIPT
+          const { Octokit } = require('@octokit/core');
+          const { createTokenAuth } = require('@octokit/auth-token');
 
-            const myOctokit = new octokit({
-              auth: process.env.GITHUB_TOKEN,
-            });
+          const auth = createTokenAuth(process.env.GITHUB_TOKEN);
+          await auth();
 
-            myOctokit.actions.createWorkflowDispatch({
-              owner: 'Ygor Mendes',
-              repo: 'cypress',
-              workflow_id: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml' 
-            });
-            SCRIPT
+          const octokit = new Octokit({
+            auth: auth.token,
+          });
 
+          await octokit.request('POST /repos/YgorMendes/cypress/actions/workflows/ci.yaml/dispatches', {
+            ref: 'master',  // Branch alvo da execução
+          });
 
+          console.log('Pipeline Cypress disparada com sucesso.');
+          SCRIPT
