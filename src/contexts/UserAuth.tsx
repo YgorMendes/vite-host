@@ -44,7 +44,7 @@ export const UserProvider = ({ children }: IContext) => {
 
   function isAuthenticated() {
     const userStorage = localStorage.getItem("user");
-    console.log(userStorage);
+    // console.log(userStorage);
 
     if (userStorage) {
       const userParse = JSON.parse(userStorage);
