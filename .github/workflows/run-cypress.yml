@@ -10,15 +10,25 @@ jobs:
     steps:
       - name: Delay for 4 minutes
         run: sleep 240s
-        
+
       - name: Trigger Cypress Pipeline
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data } = await octokit.actions.createWorkflowDispatch({
-              owner: 'Ygor Mendes',
-              repo: 'cypress',
-              workflow_id: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml' 
-            });
-            console.log(data);
+          npm install -g @actions/github-script
+          npx github-script <<SCRIPT
+          const { octokit } = require("@octokit/rest");
+
+          const myOctokit = new octokit({
+            auth: process.env.GITHUB_TOKEN,
+          });
+
+          myOctokit.actions.createWorkflowDispatch({
+            owner: 'Ygor Mendes',
+            repo: 'cypress',
+            workflow_id: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml' 
+          });
+          SCRIPT
+
+
