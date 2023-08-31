@@ -16,19 +16,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-          npm install -g @actions/github-script
-          npx github-script <<SCRIPT
-          const { octokit } = require("@octokit/rest");
+            npm install -g @actions/github-script
+            npx github-script <<SCRIPT
+            const { octokit } = require("@octokit/rest");
 
-          const myOctokit = new octokit({
-            auth: process.env.GITHUB_TOKEN,
-          });
+            const myOctokit = new octokit({
+              auth: process.env.GITHUB_TOKEN,
+            });
 
-          myOctokit.actions.createWorkflowDispatch({
-            owner: 'Ygor Mendes',
-            repo: 'cypress',
-            workflow_id: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml' 
-          });
-          SCRIPT
+            myOctokit.actions.createWorkflowDispatch({
+              owner: 'Ygor Mendes',
+              repo: 'cypress',
+              workflow_id: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml' 
+            });
+            SCRIPT
 
 
