@@ -7,7 +7,7 @@ on:
 
 jobs:
   trigger-cypress-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Delay for 1 minute
@@ -17,8 +17,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm install -g @actions/github-script
-          npx github-script <<SCRIPT
           const { Octokit } = require('@octokit/core');
           const { createTokenAuth } = require('@octokit/auth-token');
 
@@ -29,9 +27,9 @@ jobs:
             auth: auth.token,
           });
 
+          // Use a URL completa da ação do GitHub Actions
           await octokit.request('POST /repos/YgorMendes/cypress/actions/workflows/ci.yaml/dispatches', {
             ref: 'master',  // Branch alvo da execução
           });
 
           console.log('Pipeline Cypress disparada com sucesso.');
-          SCRIPT
