@@ -14,23 +14,9 @@ jobs:
         run: sleep 60s
 
       - name: Trigger Cypress Pipeline
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { Octokit } = require('@octokit/core');
-            const { createTokenAuth } = require('@octokit/auth-token');
-
-            const auth = createTokenAuth(process.env.GITHUB_TOKEN);
-            await auth();
-
-            const octokit = new Octokit({
-              auth: auth.token,
-            });
-
-            // Use a URL completa da ação do GitHub Actions no repositório do Cypress
-            await octokit.request('POST /repos/YgorMendes/cypress/actions/workflows/ci.yaml/dispatches', {
-              ref: 'master',
-            });
-
-            console.log('Pipeline Cypress disparada com sucesso.');
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/YgorMendes/cypress/actions/workflows/ci.yaml/dispatches \
+            -d '{"ref": "master"}'
