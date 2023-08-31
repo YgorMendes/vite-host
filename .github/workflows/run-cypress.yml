@@ -11,16 +11,26 @@ jobs:
 
     steps:
       - name: Delay for 1 minute
-        run: sleep 60s  # Espera por 1 minuto
-        
+        run: sleep 60s
+
       - name: Trigger Cypress Pipeline
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const response = await octokit.repos.createDispatchEvent({
-              owner: 'YgorMendes',
-              repo: 'cypress',
-              event_type: 'https://github.com/YgorMendes/cypress/actions/workflows/ci.yaml'
+            const { Octokit } = require('@octokit/core');
+            const { createTokenAuth } = require('@octokit/auth-token');
+
+            const auth = createTokenAuth(process.env.GITHUB_TOKEN);
+            await auth();
+
+            const octokit = new Octokit({
+              auth: auth.token,
             });
-            console.log(response);
+
+            // Use a URL completa da ação do GitHub Actions no repositório do Cypress
+            await octokit.request('POST /repos/YgorMendes/cypress/actions/workflows/ci.yaml/dispatches', {
+              ref: 'master',
+            });
+
+            console.log('Pipeline Cypress disparada com sucesso.');
