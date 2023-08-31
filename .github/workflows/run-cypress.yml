@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Delay for 4 minutes
-        run: sleep 240s
+        run: sleep 60s
 
       - name: Trigger Cypress Pipeline
         uses: actions/github-script@v5
