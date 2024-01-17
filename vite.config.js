@@ -25,6 +25,7 @@ export default defineConfig({
         "./useAuth": "./src/hooks/useAuth.tsx",
         "./UserAuth": "./src/contexts/UserAuth.tsx",
         "./Title": "./src/components/Title.tsx",
+        "./useUserKeycloack": "./src/hooks/useUserKeycloack.tsx",
       },
       shared: {
         react: {
